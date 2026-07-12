@@ -1,0 +1,10 @@
+# Ignore the accidentally cloned folder
+AssetFlow-Enterprise-Asset-Management/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Odoo
+*.filestore/
+*.session/

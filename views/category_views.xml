@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Asset Category Form View -->
+    <record id="view_asset_flow_category_form" model="ir.ui.view">
+        <field name="name">asset_flow.category.form</field>
+        <field name="model">asset_flow.category</field>
+        <field name="arch" type="xml">
+            <form string="Asset Category">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Electronics"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="has_warranty"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" placeholder="Category details..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Asset Category Tree View -->
+    <record id="view_asset_flow_category_tree" model="ir.ui.view">
+        <field name="name">asset_flow.category.tree</field>
+        <field name="model">asset_flow.category</field>
+        <field name="arch" type="xml">
+            <tree string="Asset Categories">
+                <field name="name"/>
+                <field name="has_warranty"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Asset Category Action -->
+    <record id="action_asset_flow_category" model="ir.actions.act_window">
+        <field name="name">Asset Categories</field>
+        <field name="res_model">asset_flow.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new asset category
+            </p>
+            <p>
+                Manage categories like Electronics, Furniture, or Vehicles to classify your assets.
+            </p>
+        </field>
+    </record>
+
+    <!-- Link action to menu -->
+    <record id="menu_asset_flow_config_categories" model="ir.ui.menu">
+        <field name="action" ref="action_asset_flow_category"/>
+    </record>
+
+</odoo>

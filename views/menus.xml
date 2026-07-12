@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root Menu for AssetFlow -->
+    <menuitem id="menu_asset_flow_root"
+              name="AssetFlow"
+              web_icon="asset_flow,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- Top Level Menus -->
+    <menuitem id="menu_asset_flow_dashboard"
+              name="Dashboard"
+              parent="menu_asset_flow_root"
+              sequence="10"/>
+
+    <menuitem id="menu_asset_flow_assets"
+              name="Assets"
+              parent="menu_asset_flow_root"
+              sequence="20"/>
+
+    <menuitem id="menu_asset_flow_bookings"
+              name="Bookings"
+              parent="menu_asset_flow_root"
+              sequence="30"/>
+
+    <menuitem id="menu_asset_flow_maintenance"
+              name="Maintenance"
+              parent="menu_asset_flow_root"
+              sequence="40"/>
+
+    <menuitem id="menu_asset_flow_audits"
+              name="Audits"
+              parent="menu_asset_flow_root"
+              sequence="50"
+              groups="group_assetflow_asset_manager"/>
+
+    <menuitem id="menu_asset_flow_configuration"
+              name="Configuration"
+              parent="menu_asset_flow_root"
+              sequence="100"
+              groups="group_assetflow_admin"/>
+              
+    <!-- Configuration Sub-menus -->
+    <menuitem id="menu_asset_flow_config_categories"
+              name="Asset Categories"
+              parent="menu_asset_flow_configuration"
+              sequence="10"/>
+              
+    <menuitem id="menu_asset_flow_config_departments"
+              name="Departments"
+              parent="menu_asset_flow_configuration"
+              sequence="20"
+              action="hr.hr_department_kanban_action"/>
+
+    <menuitem id="menu_asset_flow_config_employees"
+              name="Employee Directory"
+              parent="menu_asset_flow_configuration"
+              sequence="30"
+              action="hr.open_view_employee_list_my"/>
+
+</odoo>
