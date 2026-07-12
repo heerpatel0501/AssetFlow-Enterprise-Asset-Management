@@ -10,50 +10,39 @@
                         <h1 class="text-primary">AssetFlow Operations Dashboard</h1>
                     </div>
                     
-                    <!-- KPI Cards Layout -->
                     <div class="row w-100 mb-4">
-                        <!-- Available Assets -->
                         <div class="col-md-3">
                             <div class="card text-center bg-light border-0 shadow-sm" style="border-radius: 10px; padding: 20px;">
                                 <h3 class="text-success"><field name="assets_available"/></h3>
                                 <h6 class="text-muted text-uppercase">Assets Available</h6>
-                                <button name="action_open_available" type="object" class="btn btn-sm btn-outline-success mt-2">View</button>
                             </div>
                         </div>
-                        
-                        <!-- Allocated Assets -->
                         <div class="col-md-3">
                             <div class="card text-center bg-light border-0 shadow-sm" style="border-radius: 10px; padding: 20px;">
                                 <h3 class="text-info"><field name="assets_allocated"/></h3>
                                 <h6 class="text-muted text-uppercase">Assets Allocated</h6>
                             </div>
                         </div>
-
-                        <!-- Maintenance -->
                         <div class="col-md-3">
                             <div class="card text-center bg-light border-0 shadow-sm" style="border-radius: 10px; padding: 20px;">
                                 <h3 class="text-warning"><field name="maintenance_today"/></h3>
                                 <h6 class="text-muted text-uppercase">Active Maintenance</h6>
                             </div>
                         </div>
-
-                        <!-- Overdue Returns -->
                         <div class="col-md-3">
                             <div class="card text-center bg-danger text-white border-0 shadow-sm" style="border-radius: 10px; padding: 20px;">
                                 <h3><field name="overdue_returns"/></h3>
                                 <h6 class="text-uppercase text-white">Overdue Returns</h6>
-                                <button name="action_open_overdue" type="object" class="btn btn-sm btn-light mt-2 text-danger">Action Required</button>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Quick Actions -->
                     <div class="mt-5">
                         <h3 class="text-secondary mb-3">Quick Actions</h3>
                         <div class="btn-group">
-                            <button type="action" name="%(asset_flow.action_asset_flow_asset)d" context="{'default_status': 'available'}" class="btn btn-primary btn-lg me-2 shadow-sm rounded">Register New Asset</button>
-                            <button type="action" name="%(asset_flow.action_asset_flow_booking)d" class="btn btn-info text-white btn-lg me-2 shadow-sm rounded">Book a Resource</button>
-                            <button type="action" name="%(asset_flow.action_asset_flow_maintenance)d" class="btn btn-warning btn-lg shadow-sm rounded text-white">Raise Maintenance</button>
+                            <button type="action" name="%(action_asset_flow_asset)d" context="{'default_status': 'available'}" class="btn btn-primary btn-lg me-2 shadow-sm rounded">Register New Asset</button>
+                            <button type="action" name="%(action_asset_flow_booking)d" class="btn btn-info text-white btn-lg me-2 shadow-sm rounded">Book a Resource</button>
+                            <button type="action" name="%(action_asset_flow_maintenance)d" class="btn btn-warning btn-lg shadow-sm rounded text-white">Raise Maintenance</button>
                         </div>
                     </div>
                 </sheet>
@@ -61,25 +50,13 @@
         </field>
     </record>
 
-    <!-- Dashboard Action -->
-    <record id="action_asset_flow_dashboard" model="ir.actions.server">
+    <record id="action_asset_flow_dashboard" model="ir.actions.act_window">
         <field name="name">Dashboard</field>
-        <field name="model_id" ref="asset_flow.model_asset_flow_dashboard"/>
-        <field name="state">code</field>
-        <field name="code">
-            dashboard = env['asset_flow.dashboard'].create({})
-            action = {
-                'name': 'Dashboard',
-                'type': 'ir.actions.act_window',
-                'res_model': 'asset_flow.dashboard',
-                'res_id': dashboard.id,
-                'view_mode': 'form',
-                'target': 'current',
-            }
-        </field>
+        <field name="res_model">asset_flow.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
     </record>
 
-    <!-- Menu for Dashboard -->
     <record id="menu_asset_flow_dashboard" model="ir.ui.menu">
         <field name="action" ref="action_asset_flow_dashboard"/>
     </record>

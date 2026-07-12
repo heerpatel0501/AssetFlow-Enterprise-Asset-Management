@@ -60,13 +60,13 @@
         <field name="name">asset_flow.maintenance.tree</field>
         <field name="model">asset_flow.maintenance</field>
         <field name="arch" type="xml">
-            <tree string="Maintenance Requests" decoration-danger="priority == '3'" decoration-info="state == 'in_progress'">
+            <list string="Maintenance Requests" decoration-danger="priority == '3'" decoration-info="state == 'in_progress'">
                 <field name="name"/>
                 <field name="asset_id"/>
                 <field name="requested_by"/>
                 <field name="priority" widget="priority"/>
                 <field name="state"/>
-            </tree>
+            </list>
         </field>
     </record>
 
