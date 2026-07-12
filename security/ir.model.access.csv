@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_asset_category_employee,asset.category.employee,model_asset_flow_category,group_assetflow_employee,1,0,0,0
 access_asset_category_manager,asset.category.manager,model_asset_flow_category,group_assetflow_asset_manager,1,1,1,1
+access_asset_flow_asset_employee,asset.flow.asset.employee,model_asset_flow_asset,group_assetflow_employee,1,0,0,0
+access_asset_flow_asset_manager,asset.flow.asset.manager,model_asset_flow_asset,group_assetflow_asset_manager,1,1,1,1
+access_asset_flow_allocation_employee,asset.flow.allocation.employee,model_asset_flow_allocation,group_assetflow_employee,1,1,1,0
+access_asset_flow_allocation_manager,asset.flow.allocation.manager,model_asset_flow_allocation,group_assetflow_asset_manager,1,1,1,1

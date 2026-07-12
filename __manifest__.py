@@ -22,8 +22,11 @@
     'data': [
         'security/asset_flow_security.xml',
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/menus.xml',
         'views/category_views.xml',
+        'views/asset_views.xml',
+        'views/allocation_views.xml',
     ],
     'demo': [],
     'installable': True,

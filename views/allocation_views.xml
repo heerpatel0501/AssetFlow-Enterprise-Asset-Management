@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Allocation Form View -->
+    <record id="view_asset_flow_allocation_form" model="ir.ui.view">
+        <field name="name">asset_flow.allocation.form</field>
+        <field name="model">asset_flow.allocation</field>
+        <field name="arch" type="xml">
+            <form string="Asset Allocation">
+                <header>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state != 'requested'"/>
+                    <button name="action_return" string="Mark as Returned" type="object" class="oe_highlight" invisible="state != 'approved'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="requested,approved,returned"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="asset_id"/>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group>
+                            <field name="allocation_date"/>
+                            <field name="expected_return_date"/>
+                            <field name="return_date" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Allocation Tree View -->
+    <record id="view_asset_flow_allocation_tree" model="ir.ui.view">
+        <field name="name">asset_flow.allocation.tree</field>
+        <field name="model">asset_flow.allocation</field>
+        <field name="arch" type="xml">
+            <tree string="Allocations">
+                <field name="asset_id"/>
+                <field name="employee_id"/>
+                <field name="expected_return_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Allocation Action -->
+    <record id="action_asset_flow_allocation" model="ir.actions.act_window">
+        <field name="name">Allocations</field>
+        <field name="res_model">asset_flow.allocation</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu for Allocations (under Assets for now, or dedicated root menu) -->
+    <menuitem id="menu_asset_flow_allocations_sub"
+              name="Allocations"
+              parent="menu_asset_flow_assets"
+              sequence="20"
+              action="action_asset_flow_allocation"/>
+</odoo>
