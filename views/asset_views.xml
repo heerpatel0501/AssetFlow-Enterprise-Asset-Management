@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Asset Form View -->
+    <record id="view_asset_flow_asset_form" model="ir.ui.view">
+        <field name="name">asset_flow.asset.form</field>
+        <field name="model">asset_flow.asset</field>
+        <field name="arch" type="xml">
+            <form string="Asset">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="available,allocated,maintenance"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. MacBook Pro M2"/>
+                        </h1>
+                        <h2>
+                            <field name="asset_tag"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="category_id"/>
+                            <field name="serial_number"/>
+                            <field name="is_bookable"/>
+                        </group>
+                        <group>
+                            <field name="condition"/>
+                            <field name="location"/>
+                            <field name="acquisition_date"/>
+                            <field name="acquisition_cost" groups="asset_flow_security.group_assetflow_asset_manager"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Allocations">
+                            <field name="allocation_ids" readonly="1">
+                                <tree>
+                                    <field name="employee_id"/>
+                                    <field name="department_id"/>
+                                    <field name="allocation_date"/>
+                                    <field name="expected_return_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Asset Tree View -->
+    <record id="view_asset_flow_asset_tree" model="ir.ui.view">
+        <field name="name">asset_flow.asset.tree</field>
+        <field name="model">asset_flow.asset</field>
+        <field name="arch" type="xml">
+            <tree string="Assets">
+                <field name="asset_tag"/>
+                <field name="name"/>
+                <field name="category_id"/>
+                <field name="condition"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Asset Action -->
+    <record id="action_asset_flow_asset" model="ir.actions.act_window">
+        <field name="name">Assets</field>
+        <field name="res_model">asset_flow.asset</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Link action to menu -->
+    <record id="menu_asset_flow_assets" model="ir.ui.menu">
+        <field name="action" ref="action_asset_flow_asset"/>
+    </record>
+</odoo>
