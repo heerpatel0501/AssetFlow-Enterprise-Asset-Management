@@ -9,3 +9,6 @@ access_asset_flow_booking_employee,asset.flow.booking.employee,model_asset_flow_
 access_asset_flow_booking_manager,asset.flow.booking.manager,model_asset_flow_booking,group_assetflow_asset_manager,1,1,1,1
 access_asset_flow_maintenance_employee,asset.flow.maintenance.employee,model_asset_flow_maintenance,group_assetflow_employee,1,1,1,0
 access_asset_flow_maintenance_manager,asset.flow.maintenance.manager,model_asset_flow_maintenance,group_assetflow_asset_manager,1,1,1,1
+access_asset_flow_audit_manager,asset.flow.audit.manager,model_asset_flow_audit,group_assetflow_asset_manager,1,1,1,1
+access_asset_flow_audit_line_manager,asset.flow.audit.line.manager,model_asset_flow_audit_line,group_assetflow_asset_manager,1,1,1,1
+access_asset_flow_dashboard_employee,asset.flow.dashboard.employee,model_asset_flow_dashboard,group_assetflow_employee,1,0,0,0
