@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GitPullRequest, Settings, CheckCircle, XCircle } from 'lucide-react';
 
 export default function Workflows() {
+  const [transferStatus, setTransferStatus] = useState('Pending');
+
+  const handleApprove = () => {
+    setTransferStatus('Approved');
+    alert("Transfer Request Approved! Database synced and Rahul has been notified.");
+  };
+
+  const handleReject = () => {
+    setTransferStatus('Rejected');
+    alert("Transfer Request Rejected! Priya keeps the asset.");
+  };
+
   return (
     <div className="main-content">
       <header className="animate-up">
@@ -22,7 +34,9 @@ export default function Workflows() {
                 <strong style={{ fontSize: '1.1rem' }}>Asset Allocation Conflict</strong>
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.25rem' }}>Asset: MacBook Pro (MAC-2026-01)</div>
               </div>
-              <span className="status-badge status-maintenance">Pending Manager Approval</span>
+              <span className={`status-badge ${transferStatus === 'Pending' ? 'status-maintenance' : transferStatus === 'Approved' ? 'status-active' : 'status-inactive'}`}>
+                {transferStatus === 'Pending' ? 'Pending Manager Approval' : transferStatus}
+              </span>
             </div>
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '1rem', alignItems: 'center', background: 'var(--bg-dark)', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
@@ -37,10 +51,12 @@ export default function Workflows() {
               </div>
             </div>
             
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={16} /> Approve Transfer</button>
-              <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--danger)', borderColor: 'var(--danger)' }}><XCircle size={16} /> Reject</button>
-            </div>
+            {transferStatus === 'Pending' && (
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button className="btn btn-primary" onClick={handleApprove} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={16} /> Approve Transfer</button>
+                <button className="btn btn-secondary" onClick={handleReject} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--danger)', borderColor: 'var(--danger)' }}><XCircle size={16} /> Reject</button>
+              </div>
+            )}
           </div>
         </div>
 

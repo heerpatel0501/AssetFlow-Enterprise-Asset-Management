@@ -1,7 +1,31 @@
 import React from 'react';
-import { ShieldAlert, BarChart3, AlertTriangle, FileWarning, Zap, CheckSquare } from 'lucide-react';
+import { ShieldAlert, BarChart3, AlertTriangle, FileWarning, Zap, CheckSquare, MonitorSmartphone, CalendarCheck } from 'lucide-react';
 
-export default function Dashboard() {
+export default function Dashboard({ user }) {
+  
+  if (user.role === 'employee') {
+    return (
+      <div className="main-content">
+        <header className="animate-up">
+          <h1 className="page-title">Employee Portal</h1>
+        </header>
+        <div className="dashboard-grid animate-up delay-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem', cursor: 'pointer' }} onClick={() => alert("Redirecting to your assets...")}>
+            <MonitorSmartphone size={48} color="var(--primary)" style={{ marginBottom: '1rem' }} />
+            <h2 style={{ marginBottom: '0.5rem' }}>View My Assigned Assets</h2>
+            <p style={{ color: 'var(--text-muted)' }}>You have 2 items assigned to you.</p>
+          </div>
+          <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem', cursor: 'pointer' }} onClick={() => alert("Opening booking modal...")}>
+            <CalendarCheck size={48} color="var(--success)" style={{ marginBottom: '1rem' }} />
+            <h2 style={{ marginBottom: '0.5rem' }}>Book a Resource</h2>
+            <p style={{ color: 'var(--text-muted)' }}>Reserve meeting rooms or projectors.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Admin & Manager Dashboard (Enterprise Decision Center)
   return (
     <div className="main-content">
       <header className="animate-up">
@@ -9,8 +33,8 @@ export default function Dashboard() {
         <div className="user-profile">
           <div className="avatar"></div>
           <div className="user-info">
-            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Admin User</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Management Role</div>
+            <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{user.name}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'capitalize' }}>{user.role} Role</div>
           </div>
         </div>
       </header>
@@ -49,7 +73,7 @@ export default function Dashboard() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
         
-        {/* Quarterly Audit Heatmap */}
+        {/* Quarterly Audit Heatmap - Only Admin sees full details easily */}
         <div className="glass-card animate-up delay-2">
           <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
             <BarChart3 size={20} /> Quarterly Audit Cycle Heatmap
@@ -83,7 +107,13 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <button className="btn btn-secondary" style={{ width: '100%', marginTop: '1.5rem' }}>View Audit Discrepancy Report</button>
+          <button 
+            className="btn btn-secondary" 
+            style={{ width: '100%', marginTop: '1.5rem' }}
+            onClick={() => alert("Loading Discrepancy Report from database...")}
+          >
+            View Audit Discrepancy Report
+          </button>
         </div>
 
         {/* Automatic Decision Engine Log */}
