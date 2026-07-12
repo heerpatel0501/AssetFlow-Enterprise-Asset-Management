@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_asset_flow_audit" model="ir.sequence">
+            <field name="name">Audit Sequence</field>
+            <field name="code">asset_flow.audit</field>
+            <field name="prefix">AUD-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+
+    <!-- Audit Form View -->
+    <record id="view_asset_flow_audit_form" model="ir.ui.view">
+        <field name="name">asset_flow.audit.form</field>
+        <field name="model">asset_flow.audit</field>
+        <field name="arch" type="xml">
+            <form string="Asset Audit">
+                <header>
+                    <button name="action_start_audit" string="Start Audit &amp; Fetch Assets" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_close_audit" string="Close Audit" type="object" class="oe_highlight" invisible="state != 'in_progress'" confirm="Closing the audit will mark missing assets as 'Lost'. Continue?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="department_id" invisible="state != 'draft'"/>
+                            <field name="auditor_id"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Assets to Verify">
+                            <field name="line_ids" readonly="state == 'done'">
+                                <tree editable="bottom" decoration-danger="verification_status == 'missing'" decoration-warning="verification_status == 'damaged'" decoration-success="verification_status == 'verified'">
+                                    <field name="asset_id" readonly="1"/>
+                                    <field name="expected_status" readonly="1"/>
+                                    <field name="verification_status"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Audit Tree View -->
+    <record id="view_asset_flow_audit_tree" model="ir.ui.view">
+        <field name="name">asset_flow.audit.tree</field>
+        <field name="model">asset_flow.audit</field>
+        <field name="arch" type="xml">
+            <tree string="Asset Audits">
+                <field name="name"/>
+                <field name="department_id"/>
+                <field name="auditor_id"/>
+                <field name="start_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Audit Action -->
+    <record id="action_asset_flow_audit" model="ir.actions.act_window">
+        <field name="name">Asset Audits</field>
+        <field name="res_model">asset_flow.audit</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu for Audits -->
+    <record id="menu_asset_flow_audits" model="ir.ui.menu">
+        <field name="action" ref="action_asset_flow_audit"/>
+    </record>
+</odoo>
