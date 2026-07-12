@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sequence for Maintenance -->
+    <data noupdate="1">
+        <record id="seq_asset_flow_maintenance" model="ir.sequence">
+            <field name="name">Maintenance Request Sequence</field>
+            <field name="code">asset_flow.maintenance</field>
+            <field name="prefix">MR-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+
+    <!-- Maintenance Form View -->
+    <record id="view_asset_flow_maintenance_form" model="ir.ui.view">
+        <field name="name">asset_flow.maintenance.form</field>
+        <field name="model">asset_flow.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Request">
+                <header>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight" invisible="state != 'pending'" groups="asset_flow_security.group_assetflow_asset_manager"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state != 'pending'" groups="asset_flow_security.group_assetflow_asset_manager"/>
+                    <button name="action_start_work" string="Start Work" type="object" class="oe_highlight" invisible="state != 'approved'"/>
+                    <button name="action_resolve" string="Mark Resolved" type="object" class="oe_highlight" invisible="state != 'in_progress'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="pending,approved,in_progress,resolved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="asset_id"/>
+                            <field name="requested_by"/>
+                        </group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                            <field name="technician_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Issue Description">
+                            <field name="issue_description" placeholder="Describe the issue..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Maintenance Tree View -->
+    <record id="view_asset_flow_maintenance_tree" model="ir.ui.view">
+        <field name="name">asset_flow.maintenance.tree</field>
+        <field name="model">asset_flow.maintenance</field>
+        <field name="arch" type="xml">
+            <tree string="Maintenance Requests" decoration-danger="priority == '3'" decoration-info="state == 'in_progress'">
+                <field name="name"/>
+                <field name="asset_id"/>
+                <field name="requested_by"/>
+                <field name="priority" widget="priority"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Maintenance Action -->
+    <record id="action_asset_flow_maintenance" model="ir.actions.act_window">
+        <field name="name">Maintenance Requests</field>
+        <field name="res_model">asset_flow.maintenance</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu for Maintenance -->
+    <record id="menu_asset_flow_maintenance" model="ir.ui.menu">
+        <field name="action" ref="action_asset_flow_maintenance"/>
+    </record>
+</odoo>

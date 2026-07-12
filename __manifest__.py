@@ -27,6 +27,8 @@
         'views/category_views.xml',
         'views/asset_views.xml',
         'views/allocation_views.xml',
+        'views/booking_views.xml',
+        'views/maintenance_views.xml',
     ],
     'demo': [],
     'installable': True,
