@@ -1,24 +1,76 @@
 import React from 'react';
-import { ShieldAlert, BarChart3, AlertTriangle, FileWarning, Zap, CheckSquare, MonitorSmartphone, CalendarCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ShieldAlert, BarChart3, AlertTriangle, FileWarning, Zap, CheckSquare, MonitorSmartphone, CalendarCheck, Clock, ShieldCheck } from 'lucide-react';
 
 export default function Dashboard({ user }) {
-  
+  const navigate = useNavigate();
+
   if (user.role === 'employee') {
     return (
       <div className="main-content">
         <header className="animate-up">
           <h1 className="page-title">Employee Portal</h1>
-        </header>
-        <div className="dashboard-grid animate-up delay-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-          <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem', cursor: 'pointer' }} onClick={() => alert("Redirecting to your assets...")}>
-            <MonitorSmartphone size={48} color="var(--primary)" style={{ marginBottom: '1rem' }} />
-            <h2 style={{ marginBottom: '0.5rem' }}>View My Assigned Assets</h2>
-            <p style={{ color: 'var(--text-muted)' }}>You have 2 items assigned to you.</p>
+          <div className="user-profile">
+            <div className="avatar"></div>
+            <div className="user-info">
+              <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{user.name}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>IT Department</div>
+            </div>
           </div>
-          <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem', cursor: 'pointer' }} onClick={() => alert("Opening booking modal...")}>
+        </header>
+
+        {/* Employee Metrics Bar */}
+        <div className="dashboard-grid animate-up delay-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+          <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--primary-light)' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <MonitorSmartphone size={16} /> Assets Assigned
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 700 }}>2</div>
+            <div style={{ color: 'var(--success)', fontSize: '0.8rem', marginTop: '0.5rem' }}>All in Good Health</div>
+          </div>
+          
+          <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--warning)' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Clock size={16} /> Pending Maintenance
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 700 }}>0</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.5rem' }}>No open tickets</div>
+          </div>
+
+          <div className="glass-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--success)' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CalendarCheck size={16} /> Upcoming Bookings
+            </div>
+            <div style={{ fontSize: '2rem', fontWeight: 700 }}>1</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.5rem' }}>Company Car (Tomorrow)</div>
+          </div>
+        </div>
+
+        {/* Quick Action Hub */}
+        <h3 className="animate-up delay-2" style={{ marginBottom: '1.5rem' }}>Quick Actions</h3>
+        <div className="dashboard-grid animate-up delay-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div 
+            className="glass-card" 
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem', cursor: 'pointer', transition: 'all 0.3s' }} 
+            onClick={() => navigate('/my-assets')}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary-light)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+          >
+            <ShieldCheck size={48} color="var(--primary-light)" style={{ marginBottom: '1rem' }} />
+            <h2 style={{ marginBottom: '0.5rem' }}>Manage My Assets</h2>
+            <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>View warranty details, request repairs, or return devices.</p>
+          </div>
+          
+          <div 
+            className="glass-card" 
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '3rem', cursor: 'pointer', transition: 'all 0.3s' }} 
+            onClick={() => navigate('/bookings')}
+            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--success)'}
+            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+          >
             <CalendarCheck size={48} color="var(--success)" style={{ marginBottom: '1rem' }} />
             <h2 style={{ marginBottom: '0.5rem' }}>Book a Resource</h2>
-            <p style={{ color: 'var(--text-muted)' }}>Reserve meeting rooms or projectors.</p>
+            <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Reserve meeting rooms, vehicles, or shared projectors.</p>
           </div>
         </div>
       </div>
