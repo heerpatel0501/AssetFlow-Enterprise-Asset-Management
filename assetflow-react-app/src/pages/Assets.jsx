@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Mic } from 'lucide-react';
+import { Search, Mic, ShieldCheck, BatteryWarning, CalendarOff } from 'lucide-react';
 import Modal from '../components/Modal';
 import Toast from '../components/Toast';
 
 const initialAssets = [
-  { id: 'MAC-2026-01', name: 'MacBook Pro M3 Max', category: 'Hardware / Laptops', assignedTo: 'Sarah Jenkins', status: 'Active', age: '1.2 years' },
-  { id: 'DEL-LAT-05', name: 'Dell Latitude 7440', category: 'Hardware / Laptops', assignedTo: 'Riya', status: 'Active', age: '2.5 years' },
-  { id: 'SRV-DB-04', name: 'Dell PowerEdge R750', category: 'Hardware / Servers', assignedTo: 'Data Center A', status: 'Maintenance', age: '3.1 years' },
-  { id: 'SFW-ADO-01', name: 'Adobe Creative Cloud', category: 'Software / Licenses', assignedTo: 'Design Team', status: 'Active', age: '0.5 years' },
+  { id: 'MAC-2026-01', name: 'MacBook Pro M3 Max', category: 'Hardware / Laptops', assignedTo: 'Sarah Jenkins', status: 'Active', age: '1.2 years', health: 92, warranty: '14 Months' },
+  { id: 'DEL-LAT-05', name: 'Dell Latitude 7440', category: 'Hardware / Laptops', assignedTo: 'Rahul', status: 'Active', age: '2.5 years', health: 88, warranty: '3 Months' },
+  { id: 'SFW-ADO-01', name: 'Adobe Creative Cloud', category: 'Software / Licenses', assignedTo: 'Rahul', status: 'Active', age: '0.5 years', health: 100, warranty: '6 Months' },
+  { id: 'SRV-DB-04', name: 'Dell PowerEdge R750', category: 'Hardware / Servers', assignedTo: 'Data Center A', status: 'Maintenance', age: '3.1 years', health: 45, warranty: 'Expired' },
 ];
 
 export default function Assets({ user, isEmployeeView }) {
@@ -19,7 +19,6 @@ export default function Assets({ user, isEmployeeView }) {
   const [toastMessage, setToastMessage] = useState('');
   const [isListening, setIsListening] = useState(false);
 
-  // Form State
   const [formData, setFormData] = useState({
     name: '', id: '', category: '', brand: '', assignedTo: 'Unassigned', status: 'Active'
   });
@@ -63,7 +62,9 @@ export default function Assets({ user, isEmployeeView }) {
       category: formData.category,
       assignedTo: formData.assignedTo,
       status: formData.status,
-      age: '0 years'
+      age: '0 years',
+      health: 100,
+      warranty: '12 Months'
     };
 
     setAssets([newAsset, ...assets]);
@@ -72,7 +73,6 @@ export default function Assets({ user, isEmployeeView }) {
     setFormData({ name: '', id: '', category: '', brand: '', assignedTo: 'Unassigned', status: 'Active' });
   };
 
-  // Filter for employee view or search
   const filteredAssets = assets.filter(asset => {
     if (isEmployeeView && asset.assignedTo !== user?.name) return false;
     return asset.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -80,10 +80,66 @@ export default function Assets({ user, isEmployeeView }) {
            asset.id.toLowerCase().includes(search.toLowerCase());
   });
 
+  // Employee Card View
+  if (isEmployeeView) {
+    return (
+      <div className="main-content">
+        <header className="animate-up">
+          <h1 className="page-title">My Assigned Assets</h1>
+        </header>
+
+        <div className="dashboard-grid animate-up delay-1" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          {filteredAssets.length === 0 ? (
+            <p style={{ color: 'var(--text-muted)' }}>You have no assets assigned currently.</p>
+          ) : (
+            filteredAssets.map(asset => (
+              <div key={asset.id} className="glass-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <h2 style={{ marginBottom: '0.25rem' }}>{asset.name}</h2>
+                    <span style={{ fontFamily: 'monospace', color: 'var(--primary-light)' }}>{asset.id}</span>
+                  </div>
+                  <span className={`status-badge ${asset.status === 'Active' ? 'status-active' : 'status-maintenance'}`}>
+                    {asset.status}
+                  </span>
+                </div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px' }}>
+                  <div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                      <ShieldCheck size={14} /> Health Score
+                    </div>
+                    <div style={{ fontSize: '1.5rem', fontWeight: 600, color: asset.health > 80 ? 'var(--success)' : 'var(--warning)' }}>
+                      {asset.health}%
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                      <CalendarOff size={14} /> Warranty
+                    </div>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>
+                      {asset.warranty}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <button className="btn btn-secondary" style={{ flex: 1, fontSize: '0.8rem' }} onClick={() => alert("Redirecting to Return Workflow...")}>Request Return</button>
+                  <button className="btn btn-primary" style={{ flex: 1, fontSize: '0.8rem' }} onClick={() => navigate('/maintenance')}>Report Issue</button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Admin / Manager List View
   return (
     <div className="main-content">
       <header className="animate-up">
-        <h1 className="page-title">{isEmployeeView ? 'My Assigned Assets' : 'Asset Management'}</h1>
+        <h1 className="page-title">Asset Management</h1>
       </header>
 
       {/* Smart Search Bar */}
@@ -106,9 +162,7 @@ export default function Assets({ user, isEmployeeView }) {
           <Mic size={20} className={isListening ? "animate-pulse" : ""} /> {isListening ? 'Listening...' : 'Voice Search'}
         </button>
         
-        {(!isEmployeeView && (user?.role === 'admin' || user?.role === 'manager')) && (
-          <button className="btn btn-primary" style={{ padding: '1rem 2rem' }} onClick={() => setIsModalOpen(true)}>Register Asset</button>
-        )}
+        <button className="btn btn-primary" style={{ padding: '1rem 2rem' }} onClick={() => setIsModalOpen(true)}>Register Asset</button>
       </div>
 
       {/* Asset Table */}
@@ -120,7 +174,8 @@ export default function Assets({ user, isEmployeeView }) {
                 <th>Asset Tag</th>
                 <th>Asset Name</th>
                 <th>Category</th>
-                <th>Age</th>
+                <th>Health</th>
+                <th>Warranty</th>
                 <th>Assigned To</th>
                 <th>Status</th>
               </tr>
@@ -137,7 +192,8 @@ export default function Assets({ user, isEmployeeView }) {
                   <td style={{ fontFamily: 'monospace', color: 'var(--primary-light)' }}>{asset.id}</td>
                   <td style={{ fontWeight: 500 }}>{asset.name}</td>
                   <td style={{ color: 'var(--text-muted)' }}>{asset.category}</td>
-                  <td>{asset.age}</td>
+                  <td style={{ color: asset.health > 80 ? 'var(--success)' : 'var(--warning)', fontWeight: 600 }}>{asset.health}%</td>
+                  <td>{asset.warranty}</td>
                   <td>{asset.assignedTo}</td>
                   <td>
                     <span className={`status-badge ${asset.status === 'Active' ? 'status-active' : 'status-maintenance'}`}>
